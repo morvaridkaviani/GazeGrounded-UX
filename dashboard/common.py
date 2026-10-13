@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import streamlit as st
+import ui
 
 from gazegrounded.config import load_config
 from gazegrounded.utils import project_root
@@ -42,6 +43,9 @@ def sidebar_config() -> DashboardData:
         ):
             st.cache_resource.clear()
             st.rerun()
+        st.link_button(
+            "Source code on GitHub", ui.REPO_URL, icon=":material/code:", width="stretch"
+        )
         st.divider()
     if data.missing:
         stages = ", ".join(sorted(set(data.missing)))

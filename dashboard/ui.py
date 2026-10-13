@@ -121,6 +121,7 @@ def save_annotation(data, task_id: str, category: str, note: str) -> None:
 AUTHOR = "Morvarid Kaviani"
 AUTHOR_URL = "https://www.morvaridkaviani.com"
 AUTHOR_SITE = "www.morvaridkaviani.com"
+REPO_URL = "https://github.com/morvaridkaviani/GazeGrounded-UX"
 
 
 PROJECT_NAME = "GazeGrounded UX"
