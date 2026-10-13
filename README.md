@@ -8,7 +8,7 @@ A research toolkit that detects UX friction by comparing human eye-tracking data
 task-aware vision-language model's estimate of the task-relevant parts of an interface,
 together with interaction logs and what participants say.
 
-[Live demo](https://OWNER.github.io/GazeGrounded-UX/) ·
+[Live demo](https://morvaridkaviani.github.io/GazeGrounded-UX/) ·
 [Run it locally](#quick-start) ·
 [Use it in your research](#use-it-in-your-own-research) ·
 [Study kit](study/README.md)
@@ -121,7 +121,7 @@ Requires Python 3.11 or newer. Runs on a normal laptop (CPU is fine; Apple-silic
 are used when available).
 
 ```bash
-git clone https://github.com/OWNER/GazeGrounded-UX.git
+git clone https://github.com/morvaridkaviani/GazeGrounded-UX.git
 cd GazeGrounded-UX
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"

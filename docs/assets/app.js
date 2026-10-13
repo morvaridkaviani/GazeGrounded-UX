@@ -1,7 +1,7 @@
 /* GazeGrounded UX — project website. Reads data/site.json exported by `gazegrounded.cli export-site`. */
 "use strict";
 
-const REPO_URL = "";  // set to the GitHub repository URL
+const REPO_URL = "https://github.com/morvaridkaviani/GazeGrounded-UX";  // set to the GitHub repository URL
 const GAZE_RGB = [235, 104, 52];
 const MODEL_RGB = [42, 120, 214];
 const TARGET = "#0ca30c";
