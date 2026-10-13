@@ -1,0 +1,26 @@
+# Synthetic demo: verifies that the full software pipeline runs end to end.
+# SYNTHETIC DEMO DATA — NOT RESEARCH EVIDENCE.
+extends: base.yaml
+
+data:
+  source: synthetic
+  adapter: synthetic
+  raw_dir: data/synthetic
+  data_kind: synthetic_demo
+
+synthetic:
+  n_participants: 12
+  sampling_rate_hz: 60
+  gaze_noise_px: 18        # accuracy: systematic offset per fixation
+  gaze_precision_px: 6     # precision: sample-to-sample jitter
+  invalid_sample_rate: 0.03
+  missing_feedback_rate: 0.08
+
+saliency:
+  # Five screenshots cannot train a saliency model; this run only checks the training code.
+  epochs: 8
+  patience: 3
+  pretrained: false
+
+friction_model:
+  label_source: synthetic_latent

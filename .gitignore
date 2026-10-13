@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Secrets
+.env
+*.key
+
+# Data: never commit participant or third-party data. Generated demo data is reproducible.
+data/raw/*
+data/interim/*
+data/processed/*
+data/synthetic/*
+!data/**/.gitkeep
+!data/README.md
+
+# Study exports (may contain participant data)
+study/exports/
+study/webgazer/exports/
+
+# Experiment runs and model weights (reproducible; use Git LFS or a release asset if sharing)
+experiments/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.joblib
+
+# Generated reports (regenerate with `make report`)
+reports/generated/
+
+# Hugging Face / model caches
+.cache/
+hf_cache/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Generated figures are reproducible; only the curated README set is committed.
+assets/figures/*
+!assets/figures/readme/
+
+# Personal working notes (CV bullets, interview prep, build log) — kept locally only.
+private/

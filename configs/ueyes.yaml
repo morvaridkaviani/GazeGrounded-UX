@@ -1,0 +1,23 @@
+# UEyes (Jiang et al., CHI 2023): free-viewing eye tracking on UI screenshots.
+# Obtain the data yourself (see data/README.md) and check its licence before use.
+# UEyes has no tasks, interaction logs or friction labels, so it supports the gaze pipeline,
+# the saliency model (RQ1 baselines) but NOT the friction model (RQ2/RQ3).
+extends: base.yaml
+
+data:
+  source: ueyes
+  adapter: ueyes
+  raw_dir: data/raw/ueyes
+  data_kind: real
+  screen_width: 1920
+  screen_height: 1200
+
+gaze:
+  heatmap_sigma_px: 40
+
+saliency:
+  epochs: 30
+  patience: 5
+  pretrained: true
+  image_width: 320
+  image_height: 192

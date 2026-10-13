@@ -1,0 +1,22 @@
+# Smallest possible settings for debugging and CI (seconds, CPU only, no downloads).
+extends: synthetic.yaml
+
+synthetic:
+  n_participants: 6
+
+saliency:
+  image_width: 128
+  image_height: 80
+  batch_size: 4
+  epochs: 2
+  patience: 1
+  pretrained: false
+  device: cpu
+  fast_dev_run: true
+
+friction_model:
+  models: [logistic_regression]
+  rf_n_estimators: 50
+  permutation_repeats: 2
+  cv:
+    n_splits: 3

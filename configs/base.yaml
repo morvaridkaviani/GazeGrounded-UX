@@ -1,0 +1,95 @@
+# Base configuration. Other configs inherit from this file with `extends: base.yaml`.
+# Every tunable value lives here so it is saved with each experiment run.
+project: gazegrounded-ux
+seed: 42
+
+data:
+  source: synthetic          # namespace for data/{interim,processed}/<source>/
+  adapter: synthetic         # synthetic | ueyes | webgazer_study
+  raw_dir: data/synthetic
+  screen_width: 1440
+  screen_height: 900
+  data_kind: synthetic_demo  # synthetic_demo | real
+
+paths:
+  data_root: data
+  experiments: experiments
+  figures: assets/figures
+  reports: reports/generated
+
+gaze:
+  fixation_algorithm: idt
+  dispersion_threshold_px: 80   # I-DT: max (x-range + y-range) of a fixation window
+  minimum_duration_ms: 100      # I-DT: min fixation duration
+  max_gap_ms: 75                # invalid-sample gaps longer than this split fixations
+  heatmap_sigma_px: 40          # Gaussian kernel, ~1 deg visual angle on a laptop at ~60 cm
+  aoi_margin_px: 20             # pad AOIs by ~tracker accuracy when assigning fixations
+  map_scale: 0.125              # heatmaps/relevance maps are compared on a 1/8-resolution grid
+  min_valid_sample_ratio: 0.6   # trials below this ratio are flagged as low quality
+
+vlm:
+  provider: mock                # mock | local | http
+  model: null
+  cache: true
+  prompt_version: v1
+  max_new_tokens: 1024
+  temperature: 0.0
+  device: auto
+  mock_bbox_jitter: 0.01
+  mock_relevance_noise: 0.05
+
+comparison:
+  eps: 1.0e-12
+  relevance_threshold: 0.5      # elements at/above this are counted as "task-relevant regions"
+  vlm_box_softness: 0.25
+  # Primary RQ2 measure uses only the first K fixations (onset fixation dropped), because
+  # whole-trial divergence is confounded by fixation count. Fix K BEFORE collecting real data.
+  early_fixations: 8
+  drop_first_fixation: true
+
+saliency:
+  image_width: 256
+  image_height: 160
+  batch_size: 8
+  learning_rate: 0.0001
+  weight_decay: 0.00001
+  epochs: 20
+  patience: 5
+  loss_alpha_mse: 1.0
+  loss_beta_kl: 1.0
+  pretrained: true              # ImageNet ResNet18 weights (downloaded once by torchvision)
+  freeze_encoder: false
+  device: auto                  # auto | cpu | mps | cuda
+  val_fraction: 0.2
+  num_workers: 0
+  fast_dev_run: false
+
+nlp:
+  ngram_min: 1
+  ngram_max: 2
+  min_df: 1
+  max_features: 2000
+  C: 1.0
+  n_clusters: 6
+  n_splits: 5
+  svd_components: 8
+
+friction_model:
+  type: logistic_regression
+  models: [logistic_regression, random_forest]
+  modalities: [interaction, gaze, vlm, text, visual, multimodal]
+  cv:
+    strategy: group_kfold
+    group_by: participant_id
+    n_splits: 5
+  also_group_by_ui: true
+  logreg_C: 1.0
+  rf_n_estimators: 300
+  rf_max_depth: 6
+  permutation_repeats: 10
+  label_source: human
+
+stats:
+  paired_test: wilcoxon         # pre-specified; not chosen after looking at the data
+  alpha: 0.05
+  correction: holm
