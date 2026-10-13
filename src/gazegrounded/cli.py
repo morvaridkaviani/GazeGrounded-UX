@@ -55,6 +55,10 @@ COMMANDS: dict[str, tuple[str, Callable]] = {
         "Render the WebGazer study stimuli and tasks.json from the UI specs",
         pipeline.stage_build_study,
     ),
+    "export-site": (
+        "Export pipeline outputs for the static website in docs/",
+        pipeline.stage_export_site,
+    ),
     "run-all": (
         "Run every stage in order (synthetic config: generates the demo data first)",
         pipeline.stage_run_all,

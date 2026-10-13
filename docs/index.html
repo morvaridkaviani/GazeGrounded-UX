@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GazeGrounded UX</title>
+  <meta name="description" content="Where people look versus where a task-aware vision-language model expects the task-relevant information to be: a research toolkit for detecting UX friction with eye tracking.">
+  <meta name="author" content="Morvarid Kaviani">
+  <meta property="og:title" content="GazeGrounded UX">
+  <meta property="og:description" content="Detecting UX friction by comparing human gaze with task-aware vision-language model relevance.">
+  <meta property="og:image" content="data/ui/shop_checkout_friction.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232a78d6' d='M12 5C6.5 5 2.7 9.2 1.5 12c1.2 2.8 5 7 10.5 7s9.3-4.2 10.5-7C21.3 9.2 17.5 5 12 5Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23eb6834'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="#top" aria-label="GazeGrounded UX home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="var(--model)" d="M12 5C6.5 5 2.7 9.2 1.5 12c1.2 2.8 5 7 10.5 7s9.3-4.2 10.5-7C21.3 9.2 17.5 5 12 5Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z"/><circle cx="12" cy="12" r="2" fill="var(--gaze)"/></svg>
+      GazeGrounded UX
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#idea">Idea</a>
+      <a href="#explorer">Explorer</a>
+      <a href="#compare">Gaze vs model</a>
+      <a href="#models">Prediction</a>
+      <a href="#failures">Failure cases</a>
+      <a href="#method">Method</a>
+      <a href="#run">Run locally</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1Z"/></svg>
+      </button>
+      <a class="icon-btn" id="repo-link" href="https://github.com/" aria-label="Source code on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">UX research · eye tracking · vision-language models</p>
+      <h1>Where people <em>look</em> versus where the <strong>task</strong> needs them to look.</h1>
+      <p class="lead">GazeGrounded UX tests whether the gap between human visual attention and a task-aware
+        vision-language model's estimate of the task-relevant interface regions can reveal friction in user
+        interfaces — and explains it with gaze, behaviour and what participants say.</p>
+      <div class="actions">
+        <a class="btn primary" href="#explorer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          Explore the demo</a>
+        <a class="btn" href="#run">Run it locally</a>
+        <a class="btn" id="repo-link-2" href="https://github.com/">View source</a>
+      </div>
+      <div class="notice" id="data-notice" hidden>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21Zm12-3h-2v-2h2v2Zm0-4h-2v-4h2v4Z"/></svg>
+        <span><strong>Synthetic demo data — not research evidence.</strong> The study has not been run yet.
+          Everything below comes from simulated participants whose patterns were built into the generator,
+          to show how the analysis works. Real results will replace it after data collection.</span>
+      </div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </section>
+
+  <!-- Idea -->
+  <section class="block" id="idea">
+    <div class="container">
+      <div class="section-head">
+        <h2>The idea</h2>
+        <p>Usability tests show <em>that</em> people struggle. Eye tracking shows <em>where</em> they looked. A
+          vision-language model, given the screenshot and the task, can estimate <em>where the task-relevant
+          information is</em>. Comparing the two points to <em>why</em>: the control exists but isn't found, is
+          found but not recognised, or attention is pulled elsewhere.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3><span class="dot" style="background:var(--gaze)"></span>Human gaze</h3>
+          <p>Fixations, time to first look at the target, revisits, scanpaths and heatmaps from raw gaze samples.</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot" style="background:var(--model)"></span>Task-aware model</h3>
+          <p>A vision-language model reads the screenshot and the task and returns the relevant elements with
+            boxes and scores — a map of where the task needs attention.</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot" style="background:var(--target)"></span>Friction</h3>
+          <p>Divergence between the two, combined with behaviour and written feedback, predicts friction level
+            and points to its likely cause.</p>
+        </div>
+      </div>
+      <div class="flow" aria-label="Pipeline">
+        <span>Gaze samples</span><i>→</i><span>Fixations &amp; AOIs</span><i>→</i><span>Heatmaps</span><i>+</i>
+        <span>Screenshot + task</span><i>→</i><span>Model relevance map</span><i>→</i><span>Divergence</span><i>+</i>
+        <span>Behaviour &amp; feedback</span><i>→</i><span>Friction model</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Explorer -->
+  <section class="block" id="explorer">
+    <div class="container">
+      <div class="section-head">
+        <h2>Trial explorer</h2>
+        <p>Pick an interface, a task and a participant. Toggle layers to compare where this person looked with
+          where the model expected the task-relevant information to be. Hover the image for details.</p>
+      </div>
+      <div class="controls">
+        <div class="field"><label for="sel-ui">Interface</label><select id="sel-ui"></select></div>
+        <div class="field"><label for="sel-task">Task</label><select id="sel-task"></select></div>
+        <div class="field" style="flex:0 1 160px"><label for="sel-participant">Participant</label><select id="sel-participant"></select></div>
+      </div>
+      <div class="explorer">
+        <div>
+          <div class="chips" id="layers" role="group" aria-label="Layers" style="margin-bottom:10px"></div>
+          <div class="viewer" id="viewer-explorer"></div>
+          <div class="legend">
+            <span><span class="dot" style="background:var(--gaze)"></span>Human gaze</span>
+            <span><span class="dot" style="background:var(--model)"></span>Model relevance</span>
+            <span><span class="dot" style="background:var(--target)"></span>Task target</span>
+          </div>
+        </div>
+        <div class="card" id="trial-panel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compare -->
+  <section class="block" id="compare">
+    <div class="container">
+      <div class="section-head">
+        <h2>Gaze vs model, per task</h2>
+        <p>Gaze pooled over all participants next to the model's relevance map. Then: does the task-aware model match
+          human gaze better than task-agnostic baselines?</p>
+      </div>
+      <div class="controls"><div class="field"><label for="sel-compare">Task</label><select id="sel-compare"></select></div></div>
+      <div class="metrics four" id="compare-metrics"></div>
+      <div class="grid-2">
+        <div class="card"><h3><span class="dot" style="background:var(--gaze)"></span>Human gaze <small style="font-weight:400;color:var(--muted)">all participants</small></h3><div class="viewer" id="viewer-human" style="margin-top:10px"></div></div>
+        <div class="card"><h3><span class="dot" style="background:var(--model)"></span>Model relevance <small style="font-weight:400;color:var(--muted)">an estimate, not gaze</small></h3><div class="viewer" id="viewer-model" style="margin-top:10px"></div></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <h3>Task-aware model vs baselines</h3>
+          <div class="seg" id="baseline-metric" role="group" aria-label="Metric"></div>
+        </div>
+        <p style="font-size:14px;margin-bottom:8px">Dot = mean over tasks, bar = range. The deep saliency model is scored only on screens held out from its training.</p>
+        <div id="baseline-chart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Models -->
+  <section class="block" id="models">
+    <div class="container">
+      <div class="section-head">
+        <h2>Predicting friction</h2>
+        <p>Low / medium / high friction predicted from each signal alone and from all of them together. Scores come
+          from cross-validation in which no participant (or interface) is in both training and test data.</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+          <h3>Macro-F1 by signal</h3>
+          <div class="seg" id="split-toggle" role="group" aria-label="Generalisation"></div>
+        </div>
+        <div id="modality-chart"></div>
+        <div class="legend" id="modality-legend"></div>
+      </div>
+      <div class="grid-3" style="margin-top:16px">
+        <div class="card"><h3>What each signal adds</h3><p style="font-size:14px;margin-bottom:10px">Multimodal model with one signal removed.</p><div id="ablation"></div></div>
+        <div class="card"><h3>Confusion matrix</h3><p style="font-size:14px;margin-bottom:10px">Rows: label · columns: prediction.</p><div id="confusion"></div></div>
+        <div class="card"><h3>Most useful features</h3><p style="font-size:14px;margin-bottom:10px">Drop in macro-F1 when a feature is shuffled.</p><div id="importance"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Failures -->
+  <section class="block" id="failures">
+    <div class="container">
+      <div class="section-head">
+        <h2>Failure cases</h2>
+        <p>Tasks where the model's top-ranked element is not the element the task needs — compared with where
+          people actually looked. These are where the method needs human judgement.</p>
+      </div>
+      <div id="failure-list"></div>
+    </div>
+  </section>
+
+  <!-- Method -->
+  <section class="block" id="method">
+    <div class="container">
+      <div class="section-head">
+        <h2>Method and limits</h2>
+        <p>How the numbers are produced and what they cannot tell you.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>Measures</h3><p>I-DT fixation detection; AOIs padded by tracker accuracy; time to first fixation on the target, revisits,
+          transitions; duration-weighted heatmaps. <strong>Early divergence</strong> = Jensen–Shannon divergence between the first
+          8 fixations and the model map. Whole-trial divergence is confounded by the number of fixations.</p></div>
+        <div class="card"><h3>Evaluation</h3><p>Grouped cross-validation by participant and by interface; majority-class reference; macro-F1 and
+          weighted kappa. Statistics treat trials as nested in participants (repeated-measures correlation, paired tests on
+          participant means, Holm correction). Analyses are fixed before data collection.</p></div>
+        <div class="card"><h3>Limits</h3><p>The model map is an estimate of task-relevant regions, not a measurement of attention. Gaze shows where
+          people looked, not what they understood. Webcam eye tracking is far less precise than lab trackers. Static screenshots
+          stand in for live, multi-step interfaces.</p></div>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card"><h3>Study design</h3><p>Nine fictitious interfaces (checkout, banking, travel, patient portal, subscription), each with a clean and a
+          friction variant except one. Participants see one variant of each pair (counterbalanced), complete 9 tasks with webcam eye
+          tracking, rate ease (SEQ) and comment. No video is recorded; only gaze coordinates, clicks and answers are kept.</p></div>
+        <div class="card"><h3>Privacy</h3><p>Pseudonymous participant codes, no names or e-mails, nothing uploaded automatically: participants download
+          their own data and send it to the researcher. Gaze is treated as sensitive behavioural data.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Run locally -->
+  <section class="block" id="run">
+    <div class="container">
+      <div class="section-head">
+        <h2>Run it locally</h2>
+        <p>Python 3.11+. The demo runs on a laptop in about a minute and costs nothing.</p>
+      </div>
+      <div class="grid-2">
+        <div>
+          <h3 style="margin:0 0 8px;font-size:16px">1. Install</h3>
+          <div class="code"><button class="copy" type="button">Copy</button><pre><span id="clone-cmd">git clone https://github.com/&lt;owner&gt;/GazeGrounded-UX.git</span>
+cd GazeGrounded-UX
+python -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install -e ".[dev]"</pre></div>
+          <h3 style="margin:16px 0 8px;font-size:16px">2. Run the pipeline and open the dashboard</h3>
+          <div class="code"><button class="copy" type="button">Copy</button><pre>python -m gazegrounded.cli run-all     <span class="c"># synthetic demo, ~1 min</span>
+streamlit run dashboard/app.py         <span class="c"># interactive dashboard</span></pre></div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 8px;font-size:16px">3. Use your own data</h3>
+          <div class="code"><button class="copy" type="button">Copy</button><pre><span class="c"># webcam study (stimuli + tasks.json), then serve locally</span>
+python -m gazegrounded.cli build-study
+cd study/webgazer &amp;&amp; python -m http.server 8000
+
+<span class="c"># analyse collected sessions in data/raw/study/sessions/</span>
+python -m gazegrounded.cli run-all --config configs/experiment.yaml
+
+<span class="c"># use a local vision-language model (Qwen2.5-VL)</span>
+pip install -e ".[vlm]"
+python -m gazegrounded.cli vlm-analysis --set vlm.provider=local</pre></div>
+          <p style="color:var(--ink-2);font-size:14px;margin:0">Full documentation, study protocol, consent template and data dictionary are in the repository.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    © <span id="year">2026</span> GazeGrounded UX · All rights reserved · Designed and developed by
+    <strong>Morvarid Kaviani</strong> · <a href="https://www.morvaridkaviani.com" rel="noopener">www.morvaridkaviani.com</a>
+  </div>
+</footer>
+
+<div class="tooltip" id="tooltip" role="status"></div>
+<script src="assets/app.js"></script>
+</body>
+</html>

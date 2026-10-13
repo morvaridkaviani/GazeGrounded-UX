@@ -1,301 +1,306 @@
+<div align="center">
+
 # GazeGrounded UX
 
-**Task-aware multimodal detection of UX friction using human gaze, vision-language models, deep learning, interaction data and NLP.**
+**Where people look versus where the task needs them to look.**
 
-> GazeGrounded UX explores whether disagreement between human visual attention and task-aware
-> Vision-Language Model predictions can reveal friction in user interfaces.
+A research toolkit that detects UX friction by comparing human eye-tracking data with a
+task-aware vision-language model's estimate of the task-relevant parts of an interface,
+together with interaction logs and what participants say.
 
-[![tests](https://img.shields.io/badge/tests-pytest-blue)](.github/workflows/tests.yml)
-![python](https://img.shields.io/badge/python-3.11%2B-blue)
-![status](https://img.shields.io/badge/real--data%20results-pending-lightgrey)
+[Live demo](https://OWNER.github.io/GazeGrounded-UX/) ·
+[Run it locally](#quick-start) ·
+[Use it in your research](#use-it-in-your-own-research) ·
+[Study kit](study/README.md)
+
+![Python](https://img.shields.io/badge/python-3.11%2B-2a78d6)
+![License](https://img.shields.io/badge/license-MIT-2a78d6)
+![Tests](https://img.shields.io/badge/tests-96%20passing-0b7a0b)
+![Results](https://img.shields.io/badge/real--participant%20results-pending-lightgrey)
+
+</div>
+
+![GazeGrounded UX website](assets/screenshots/website_hero.png)
 
 > [!IMPORTANT]
-> **No real participant data has been collected yet.** Everything you can run today uses
-> **synthetic demo data**, which shows that the software works end to end. Numbers on synthetic
-> data are not findings. Results on real data: **experimental results pending.**
-
-![Human gaze vs the VLM Task-Relevance Map on a checkout page whose "edit address" control is hidden in the footer](assets/figures/readme/human_vs_vlm.png)
-
-*Synthetic demo. Left: where simulated participants looked. Middle: where a task-aware model
-estimates the task-relevant information is. Right: red = attention the model did not expect,
-blue = expected attention that people did not give.*
+> **The participant study has not been run yet.** Everything shown here uses **synthetic demo
+> data**: simulated participants whose behaviour was generated to demonstrate the analysis.
+> These numbers are not research findings. Real results will be added after data collection.
 
 ---
 
-## Why this project?
+## What it does
 
-Usability studies show *that* people struggle: a task takes long, fails, or gets a low ease
-rating. They are less good at showing *why*. Eye tracking adds where people looked. Modern
-vision-language models (VLMs) add something new: given a screenshot **and the user's task**, a VLM
-can estimate which interface elements matter for that task.
+Usability tests show *that* people struggle. Eye tracking shows *where* they looked. GazeGrounded
+UX adds a third view: given a screenshot **and the user's task**, a vision-language model (VLM)
+estimates which interface elements matter for that task. Comparing where people looked with where
+the task-relevant information is helps explain *why* a task was hard:
 
-When people's gaze goes somewhere other than where the task-relevant information is, that gap may
-point to the cause of the friction: the right control exists but is not found (findability), it
-is found but not recognised (ambiguous wording), or attention is pulled elsewhere (visual
-hierarchy). GazeGrounded UX builds the whole pipeline needed to test this idea rigorously.
+- **Findability**: the right control exists, but people don't find it.
+- **Recognition**: people look at it but don't recognise it, e.g. an unlabelled icon.
+- **Distraction**: attention is pulled elsewhere, e.g. by a promotional banner.
+
+The toolkit covers the whole workflow:
+- a browser-based webcam eye-tracking study
+- gaze analysis
+- VLM grounding
+- a deep-learning saliency baseline
+- feedback text analysis
+- a multimodal friction model
+- statistics
+- an interactive dashboard and a static website.
+
+## Screenshots
+
+| Trial explorer | Gaze vs model, per task |
+|---|---|
+| ![Trial explorer: gaze heatmap, scanpath and model elements on a checkout page](assets/screenshots/website_explorer.png) | ![Pooled gaze next to the model's relevance map, and a baseline comparison](assets/screenshots/website_compare.png) |
+| **Predicting friction** | **Failure cases** |
+| ![Friction prediction by signal, ablation, confusion matrix and feature importance](assets/screenshots/website_prediction.png) | ![A failure case: the model's top element versus the task target and where people looked](assets/screenshots/website_failure_case.png) |
+
+<details>
+<summary><b>Dark mode and the analysis dashboard</b></summary>
+
+![Website in dark mode](assets/screenshots/website_dark.png)
+
+The Streamlit dashboard offers the same views for local analysis, and lets you record your own
+interpretation of each failure case:
+
+![Streamlit dashboard: trial explorer](assets/screenshots/dashboard_trial_explorer.png)
+![Streamlit dashboard: failure cases](assets/screenshots/dashboard_failure_cases.png)
+</details>
 
 ## Research questions
 
 | | Question | How it is tested |
 |---|---|---|
-| **RQ1** | How closely does task-conditioned VLM relevance align with human visual attention? | Map metrics (CC, SIM, KL, NSS) against three task-agnostic baselines: centre bias, spectral-residual saliency, a trained deep saliency model |
-| **RQ2** | Does human/VLM attention divergence co-vary with behavioural friction? | Repeated-measures correlation with completion time, revisits and TTFF; paired clean-vs-friction tests on participant means |
-| **RQ3** | Do gaze, interaction, VLM and text signals together predict friction better than each alone? | Grouped cross-validation (new participants; new interfaces), macro-F1 and quadratic weighted kappa against a majority-class reference |
-| RQ4 | Which modalities contribute most? | Leave-one-modality-out ablation, permutation importance |
+| **RQ1** | How closely does task-conditioned VLM relevance align with human visual attention? | Map metrics (CC, SIM, KL, NSS) against task-agnostic baselines: centre bias, spectral-residual saliency and a trained deep saliency model |
+| **RQ2** | Does the divergence between gaze and VLM relevance co-vary with behavioural friction? | Repeated-measures correlation with completion time, revisits and time to first fixation; paired clean-vs-friction tests |
+| **RQ3** | Do gaze, interaction, VLM and text signals together predict friction better than each alone? | Cross-validation grouped by participant and by interface; macro-F1 and quadratic weighted kappa against a majority-class reference |
+| RQ4 | Which signals contribute most? | Leave-one-signal-out ablation and permutation importance |
 
-## System overview
+## How it works
 
 ```mermaid
-flowchart TB
-    S[UI screenshot] --> V["Vision-language model<br/>task-conditioned grounding"]
-    T[Task description] --> V
-    V --> M[VLM Task-Relevance Map]
-    G[Gaze samples] --> F["I-DT fixations · AOIs<br/>TTFF · revisits · scanpaths · heatmaps"]
-    M --> A["Human vs VLM alignment<br/>similarity · divergence"]
+flowchart LR
+    S[Screenshot] --> V["Vision-language model<br/>+ task description"]
+    V --> M[Task-relevance map]
+    G[Gaze samples] --> F["Fixations · AOIs<br/>TTFF · revisits · heatmaps"]
+    M --> A["Gaze vs model<br/>similarity · divergence"]
     F --> A
-    S --> D["Deep saliency model<br/>(task-agnostic baseline)"]
-    I[Interaction log] --> X[Multimodal feature table]
-    U[Written feedback] --> N["NLP: TF-IDF + logistic regression"]
+    I[Interaction log] --> X[Trial features]
+    U[Written feedback] --> N[Text classifier]
     A --> X
     F --> X
     N --> X
     X --> R["Friction model<br/>low · medium · high + explanation"]
 ```
 
-## Example
-
-<table>
-<tr>
-<td width="50%"><img src="assets/figures/readme/vlm_grounding.png" alt="VLM grounding boxes"><br><sub>Task-conditioned grounding for “You have lost your debit card. Freeze it.” on the friction variant, where the freeze action is a padlock icon without a label.</sub></td>
-<td width="50%"><img src="assets/figures/readme/aoi_dwell.png" alt="AOI dwell times"><br><sub>Mean dwell per AOI. The promo banner absorbs more attention than the target link.</sub></td>
-</tr>
-</table>
-
-![Dashboard: trial explorer](assets/screenshots/dashboard_trial_explorer.png)
-
-## Modalities
-
-| Modality | Source | Examples of features |
-|---|---|---|
-| **Gaze** | eye tracker / WebGazer samples → I-DT fixations | TTFF on target, fixation count, mean fixation duration, revisits, AOI transitions, scanpath length, task-relevant attention |
-| **Interaction** | task log | completion time, clicks, errors, success |
-| **Vision (VLM)** | screenshot + task → grounded elements | relevance statistics; human/VLM similarity; **early attention divergence** |
-| **Language** | post-task comment | predicted feedback category (TF-IDF + LR, fitted inside each CV fold) |
-| Visual (optional) | screenshot only | AOI count, edge density, saliency entropy |
-
-## Pipeline
-
-1. **Data** — adapters convert each source (synthetic, UEyes, own study) into one validated schema (pydantic): gaze samples, trials, AOIs, tasks. PII-looking columns are rejected.
-2. **Gaze** — I-DT fixation detection (Salvucci & Goldberg, 2000), AOI assignment with a margin for tracker accuracy, TTFF/dwell/revisits/transitions, AOI scanpaths, Gaussian heatmaps.
-3. **VLM** — a provider interface (mock · local Hugging Face · HTTP-served) returns strict JSON (element, role, box, task relevance, attention priority, reason). A never-raising parser validates it; raw responses are cached by image checksum + task + model + prompt version.
-4. **Human vs VLM** — boxes become a continuous *VLM Task-Relevance Map*, compared with gaze maps (CC, SIM, KL, JSD, NSS) and at AOI level.
-5. **Deep learning** — a ResNet18 + FPN-lite decoder predicts gaze heatmaps from screenshots (loss = α·MSE + β·KL).
-6. **NLP** — feedback classification and exploratory topics.
-7. **Fusion** — trial-level features → logistic regression / random forest, grouped CV, explanations.
-8. **Statistics & report** — RQ1–RQ4 analyses and a generated Markdown report.
-9. **Dashboard** — Streamlit app to explore any trial and the model results.
-
-## Repository structure
-
-```text
-configs/          YAML configs (base, synthetic, fast_dev, ueyes, experiment)
-src/gazegrounded/ package: data/ gaze/ vlm/ vision/ nlp/ multimodal/ analysis/ visualization/
-                  pipeline.py (stages) · cli.py
-dashboard/        Streamlit app (trial explorer + 4 pages)
-study/            protocol, consent, questionnaire and the WebGazer browser study
-notebooks/        01–06, executed; import the package, contain no core logic
-scripts/          thin wrappers around the CLI
-tests/            pytest suite incl. an end-to-end CLI smoke test
-reports/          model card, dataset card, limitations, experiment template
-data/             README only — data is generated or downloaded locally, never committed
-```
+1. **Data**: adapters convert each source (synthetic demo, UEyes, the webcam study) into one
+   validated format. Columns that look like personal data are rejected.
+2. **Gaze**:
+   - I-DT fixation detection (Salvucci & Goldberg, 2000)
+   - areas of interest (AOIs) padded by the tracker's accuracy
+   - time to first fixation (TTFF), dwell, revisits, transitions, scanpaths
+   - duration-weighted heatmaps.
+3. **VLM grounding**: the model returns the task-relevant elements as structured JSON (label, role,
+   box, relevance, attention priority, reason). Responses are validated and cached. These boxes
+   become a continuous **task-relevance map**.
+4. **Comparison**: gaze maps against the relevance map (CC, SIM, KL, JSD, NSS) and per AOI. The
+   primary measure is **early divergence**, computed over the first 8 fixations.
+5. **Deep learning**: a ResNet18 encoder with an FPN-style decoder predicts gaze heatmaps from
+   screenshots. It serves as a task-agnostic baseline.
+6. **Text**: participants' comments are classified into friction categories with TF-IDF and
+   logistic regression.
+7. **Fusion and statistics**: friction models are compared with leakage-safe grouped
+   cross-validation, explained, and summarised in a generated report.
 
 ## Quick start
 
-Requires Python 3.11+ (developed on 3.13, macOS/Apple silicon; CPU-only works).
+Requires Python 3.11 or newer. Runs on a normal laptop (CPU is fine; Apple-silicon and NVIDIA GPUs
+are used when available).
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
+git clone https://github.com/OWNER/GazeGrounded-UX.git
+cd GazeGrounded-UX
+python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
-pytest                                   # ~95 tests, < 1 minute
-python -m gazegrounded.cli run-all       # synthetic demo, ~1 minute, $0
-streamlit run dashboard/app.py           # open the dashboard
+
+pytest                                   # 96 tests, about 1 minute
+python -m gazegrounded.cli run-all       # full synthetic demo, about 1 minute, no API costs
 ```
 
-## Demo (synthetic data)
-
-`run-all` runs every stage; each can also run on its own:
+Then explore the results:
 
 ```bash
-python -m gazegrounded.cli generate-demo     # 5 UIs, 12 participants, 120 trials
-python -m gazegrounded.cli preprocess        # adapter -> validation -> data/processed/
-python -m gazegrounded.cli gaze-analysis     # fixations, metrics, scanpaths, heatmaps
-python -m gazegrounded.cli vlm-analysis      # mock VLM, relevance maps, alignment
-python -m gazegrounded.cli train-saliency    # add --device cpu|mps|cuda, --fast-dev-run
-python -m gazegrounded.cli nlp-analysis
-python -m gazegrounded.cli train-friction    # builds features, compares modalities
-python -m gazegrounded.cli evaluate          # RQ1–RQ4 -> reports/generated/<source>/report.md
-python -m gazegrounded.cli build-study       # study stimuli + tasks.json
+streamlit run dashboard/app.py                     # interactive dashboard -> http://localhost:8501
+
+python -m gazegrounded.cli export-site             # refresh the website data in docs/
+python -m http.server 8000 --directory docs        # website -> http://localhost:8000
 ```
 
-Every command takes `--config` and `--set key=value` (e.g. `--set seed=7`). `make demo`,
-`make test` and `make dashboard` are shortcuts. Each training run writes
-`experiments/<timestamp>-<name>/` with `config.yaml`, `metrics.json`, `predictions.csv` and
-`feature_importance.csv`.
+`make test`, `make demo` and `make dashboard` are shortcuts for the same commands.
 
-**How the synthetic data is built.** A hidden friction severity per trial (designed UI friction
-+ participant susceptibility + noise) drives simulated visual search, revisits, errors and
-templated feedback; labels are a noisy binning of that severity. The generator *assumes* the
-effects the study will test, so any “effect” in the demo is put there by construction.
+## Use it in your own research
 
-## Working with real data
+### 1. Collect data with the webcam study
 
-* **Own study** — run the browser study (below), place exports in `data/raw/study/sessions/`,
-  then `python -m gazegrounded.cli run-all --config configs/experiment.yaml`.
-* **UEyes** (Jiang et al., CHI 2023; CC BY 4.0) — download from Zenodo, see
-  [data/README.md](data/README.md); use `configs/ueyes.yaml` for gaze analysis and training the
-  saliency model. UEyes is free-viewing (no tasks or labels), so it cannot test RQ2/RQ3.
+The browser study in [`study/webgazer`](study/webgazer) runs in Chrome or Edge, with no server
+code. It handles:
+- consent and pseudonymous participant codes
+- 9-point calibration with an accuracy check
+- counterbalanced clean and friction tasks
+- an ease rating (SEQ) and a comment after each task
+- a local data download.
 
-Licences of third-party data are the user's responsibility; no third-party data is redistributed.
+No video is ever recorded.
 
-## VLM analysis
+```bash
+python -m gazegrounded.cli build-study            # renders stimuli + tasks.json from the UI specs
+python -m http.server 8000 --directory study/webgazer
+```
 
-The VLM receives the screenshot **and the task** and is asked about *task relevance* — not just
-“where would someone look”. That is the difference from image classification or task-free saliency:
-the same checkout page has different relevant regions for “change the address” and “apply a
-discount code”. Grounding means the model must also say *where* (a bounding box), so its
-reasoning can be compared with gaze.
+Read [study/protocol.md](study/protocol.md) and adapt
+[study/consent_template.md](study/consent_template.md) to your ethics requirements first. To use
+your own interfaces, edit `src/gazegrounded/data/ui_specs.py`. It defines each screen, its AOIs,
+the tasks and the friction manipulation in one place.
 
-| Provider | Use | Notes |
-|---|---|---|
-| `mock` | demo, tests | **Not a VLM.** Lexical scoring of annotated AOI descriptions; deterministic |
-| `local` | real analysis, $0 | Hugging Face `Qwen/Qwen2.5-VL-3B-Instruct` via transformers 5 (`pip install -e ".[vlm]"`); pixel boxes |
-| `http` | optional | any model served behind a chat-completions API, e.g. a local Ollama / vLLM / LM Studio server (`VLM_API_BASE_URL` in `.env`) |
+### 2. Analyse the sessions
+
+Put the participants' exported JSON files in `data/raw/study/sessions/`. Add
+`data/raw/study/labels.csv` (`trial_id, friction_label, feedback_category`) if you code the
+trials yourself. Then:
+
+```bash
+python -m gazegrounded.cli run-all --config configs/experiment.yaml
+```
+
+### 3. Use a real vision-language model
+
+The demo uses a deterministic **mock** provider so it runs anywhere. It is not a VLM. For real
+analysis:
+
+| Provider | Setup |
+|---|---|
+| `local` | `pip install -e ".[vlm]"`. Runs `Qwen/Qwen2.5-VL-3B-Instruct` locally through Hugging Face transformers (about 8 GB RAM). |
+| `http` | Any model served through a chat-completions API, e.g. a local Ollama, vLLM or LM Studio server. Set `VLM_API_BASE_URL` in `.env`. |
 
 ```bash
 python -m gazegrounded.cli vlm-analysis --config configs/experiment.yaml --set vlm.provider=local
 ```
 
-The VLM map is the model's **estimate of task-relevant regions**. It is not a measurement or
-prediction of gaze, and the project never treats it as a window into cognition.
+Model responses are cached by image, task, model and prompt version, so each screenshot and task
+pair is only sent once.
 
-## Deep learning
+### 4. Public eye-tracking data
 
-`vision/saliency_model.py`: ImageNet ResNet18 encoder, FPN-style decoder (~11.5 M parameters),
-trained on screenshot → gaze-heatmap pairs with α·MSE + β·KL (KL matches the *distribution* of
-attention; MSE stabilises early training). Train/validation splits are by interface pair, so a
-clean and a friction variant of the same page never straddle the split. Early stopping,
-checkpoints (`best_model.pt`, git-ignored), CPU/MPS/CUDA, `--fast-dev-run`. It serves as the
-task-agnostic baseline C in RQ1 and is evaluated only on held-out screens.
+The UEyes dataset (Jiang et al., CHI 2023, CC BY 4.0) is supported for gaze analysis and for
+training the saliency model. See [data/README.md](data/README.md).
 
-## NLP
+### Configuration and outputs
 
-Post-task answers to “What made this task easy or difficult?” are cleaned lightly (negations
-kept), represented with TF-IDF and classified with logistic regression into findability,
-visual hierarchy, ambiguous wording, information overload, feedback uncertainty, navigation,
-no friction, other. TF-IDF + LR is the interpretable baseline: on a few hundred short comments it
-is hard to beat and every coefficient can be inspected. KMeans topics are exploratory only.
+All settings live in YAML files in [`configs/`](configs): fixation thresholds, AOI margin,
+heatmap size, model settings and statistics. Any value can be overridden on the command line,
+e.g. `--set gaze.dispersion_threshold_px=100`.
 
-## Multimodal friction detection
+| Output | Location |
+|---|---|
+| Validated tables, trial features | `data/processed/<source>/` |
+| Fixations, gaze metrics, VLM responses | `data/interim/<source>/` |
+| Each model run (config, metrics, predictions, feature importance) | `experiments/<timestamp>-<name>/` |
+| Research report (RQ1–RQ4) and failure cases | `reports/generated/<source>/` |
+| Figures | `assets/figures/<source>/` |
 
-Early fusion of the modality features into one scikit-learn pipeline. Every learned step
-(imputation, scaling, the text classifier) is refit inside each training fold. Models: logistic
-regression (interpretable baseline), random forest, majority class (chance reference).
-Explanations: standardised coefficients, permutation importance on held-out folds, and per-trial
-contributions shown in the dashboard.
+### Extending
 
-**Data splitting.** `GroupKFold` by participant (generalising to new people) and by interface
-(generalising to new screens). Rows are never split at random, and a test asserts zero group
-overlap on every fold.
+- **New data source**: subclass `EyeTrackingDatasetAdapter` in `src/gazegrounded/data/adapters.py`.
+- **New model**: subclass `VLMProvider` in `src/gazegrounded/vlm/` and implement `_generate`.
+  Prompting, caching and parsing are inherited.
+- **New features**: add them to `MODALITY_FEATURES` in `src/gazegrounded/multimodal/features.py`.
 
-## Dashboard
+## Project structure
 
-```bash
-streamlit run dashboard/app.py
+```text
+configs/            YAML settings (synthetic demo, webcam study, UEyes, quick debug)
+src/gazegrounded/   Python package
+  data/             schemas, validation, adapters, UI specs, synthetic generator
+  gaze/             fixations, AOIs, scanpaths, metrics, heatmaps
+  vlm/              prompts, providers, parsing, task-relevance maps
+  vision/           baselines and the deep saliency model
+  nlp/              feedback text analysis
+  multimodal/       features, fusion, models, explanations
+  analysis/         metrics, statistics, research report
+  pipeline.py, cli.py
+dashboard/          Streamlit analysis dashboard
+docs/               static website (GitHub Pages)
+study/              protocol, consent template, questionnaire, data dictionary, webcam study
+notebooks/          worked analysis notebooks
+reports/            model card, dataset card, limitations
+tests/              unit and end-to-end tests
 ```
-
-* **Trial explorer**: interface and task, behavioural metrics, interactive gaze heatmap,
-  fixations sized by duration, numbered scanpath, VLM boxes and map, divergence map, feedback
-  with the out-of-fold NLP category, and why the model predicted its friction level.
-* Pages: Human vs VLM (RQ1 baselines), Friction models (RQ3/RQ4), Failure cases (with saved
-  interpretations), Methodology.
-
-![Dashboard: failure cases](assets/screenshots/dashboard_failure_cases.png)
 
 ## Methodology
 
-* **Fixations**: I-DT, 80 px / 100 ms (lab); 120 px for webcam data. AOIs padded by about the
-  tracker's accuracy (20 px lab, 40 px webcam).
-* **Heatmaps**: duration-weighted, Gaussian σ ≈ 1° visual angle, compared on a 1/8 grid.
-* **Attention divergence**: Jensen–Shannon divergence (base 2, range 0–1) between the gaze
-  heatmap and the VLM map. The **primary** measure uses only the first 8 fixations after the
-  onset fixation (`attention_divergence_early`). Validating the pipeline showed that
-  whole-trial divergence is confounded by fixation count: a sparse map from a short, easy trial
-  looks “divergent” from any smooth map. This choice was made before any real data existed and
-  must stay fixed for the real study.
-* **Statistics**: repeated-measures correlation (trials nested in participants) as primary;
-  trial-level correlations exploratory only; paired tests on participant means, with the test
-  pre-specified in config; effect sizes; Holm correction within pre-declared families.
-* **Experiment template**: every analysis reports hypothesis, variables, dataset, split, model,
-  metrics, result, interpretation and limitation ([reports/experiment_template.md](reports/experiment_template.md)).
+- **Fixations**: I-DT with a 80 px / 100 ms window for lab trackers (120 px for webcam data).
+  AOIs are padded by roughly the tracker's accuracy: 20 px for lab trackers, 40 px for webcams.
+- **Early divergence**: Jensen–Shannon divergence (0–1) between the first 8 fixations and the
+  model's relevance map. Whole-trial divergence is reported as a secondary measure, because it
+  is confounded by the number of fixations: short, easy trials produce sparse maps that look
+  divergent.
+- **No data leakage**:
+  - Cross-validation is grouped by participant (generalising to new people) and by interface
+    (generalising to new screens). A test checks that no group appears in both training and
+    test data.
+  - Every learned step, including the text classifier, is fitted inside each training fold.
+- **Statistics**:
+  - Trials are nested in participants, so the primary analysis uses repeated-measures
+    correlation.
+  - Condition comparisons use paired tests on participant means, pre-specified in the
+    configuration.
+  - Effect sizes and Holm-corrected p-values are reported.
+- **Every analysis** is reported with its hypothesis, variables, data, split, model, metrics,
+  result, interpretation and limitation
+  ([template](reports/experiment_template.md)).
 
 ## Results
 
-**Experimental results pending.** No real participant data has been collected.
+**Pending.** No participant data has been collected yet.
 
 <details>
-<summary><b>Synthetic demo output (pipeline verification only — not findings)</b></summary>
-
-These outputs only show that each stage runs and produces sensible artefacts. The generator
-put these patterns into the data.
+<summary>Synthetic demo output (shows the analysis works; not findings)</summary>
 
 | | |
 |---|---|
-| ![RQ1 baselines](assets/figures/readme/rq1_baselines_cc.png) | ![Modality comparison](assets/figures/readme/modality_comparison.png) |
-| ![RQ2 divergence](assets/figures/readme/rq2_divergence.png) | ![Permutation importance](assets/figures/readme/feature_importance.png) |
+| ![Baselines](assets/figures/readme/rq1_baselines_cc.png) | ![Prediction by signal](assets/figures/readme/modality_comparison.png) |
+| ![Early vs whole-trial divergence](assets/figures/readme/rq2_divergence.png) | ![Feature importance](assets/figures/readme/feature_importance.png) |
 
-Generate the full report locally with `python -m gazegrounded.cli evaluate`
-(`reports/generated/synthetic/report.md`).
+Run `python -m gazegrounded.cli evaluate` to generate the full report in `reports/generated/`.
 </details>
 
-## Failure-case analysis
+## Limitations and ethics
 
-`evaluate` lists every task where the VLM's top element is not the annotated target, with
-the screenshot, task, VLM output, human gaze and the dwell share on the target. Typical
-categories to look for with a real VLM: icon meaning misunderstood, text too small, several
-similar buttons, task depends on hidden content or scrolling, and elements that are
-semantically right but visually ignored. With the mock provider these cases only demonstrate
-the tooling.
+- **Gaze is not understanding.** Eye tracking shows where people looked, not what they
+  understood. A long look can mean interest or confusion.
+- **Webcam accuracy is limited.** Webcam eye tracking is accurate to about 100–200 px. That is
+  enough to tell which region someone looked at, but too coarse for small icons or reading.
+- **The model's map is an estimate.** It shows where the model expects the task-relevant
+  information to be. VLMs can be wrong, and confidently so.
+- **Small samples and static stimuli.** Expect small studies, and static screenshots stand in
+  for live, multi-step interfaces.
+- **Gaze is sensitive data.** The study uses pseudonymous codes and never records video.
+  Participants download and send their own data. Only send screenshots to externally hosted
+  models if they contain nothing confidential.
 
-![Failure case](assets/figures/readme/failure_case.png)
-
-## Limitations
-
-See [reports/limitations.md](reports/limitations.md). In short:
-* Gaze shows where people looked, not what they understood.
-* Webcam gaze is far less accurate and precise than lab eye trackers.
-* VLM grounding can be wrong, and confident when wrong.
-* Samples will be small.
-* Static screenshots stand in for multi-step interactions.
-* Synthetic results demonstrate the software only.
-
-## Ethical considerations
-
-Gaze is behavioural data that can reveal attention, reading ability and possibly health-related
-traits. The study collects pseudonymous codes only, never stores webcam video, keeps data local
-until the participant chooses to export it, and supports withdrawal at any point. See
-[study/consent_template.md](study/consent_template.md),
-[reports/dataset_card.md](reports/dataset_card.md) and [reports/model_card.md](reports/model_card.md).
-Do not send screenshots containing personal or confidential data to externally hosted models.
+See [reports/limitations.md](reports/limitations.md), the
+[model card](reports/model_card.md) and the [dataset card](reports/dataset_card.md).
 
 ## Roadmap
 
-- [ ] Ethics approval and a pilot (3–5 participants) of the WebGazer study
-- [ ] Main study (target ≥ 24 participants, counterbalanced) and researcher-coded friction labels
-- [ ] Real VLM runs (Qwen2.5-VL locally, plus a second open model for comparison) with failure-case coding
-- [ ] Saliency model trained on UEyes, evaluated on held-out interfaces
-- [ ] Confirmatory RQ2 analysis exactly as specified in `analysis/research.py`
-- [ ] Optional: lab eye-tracker replication; late-fusion and sequence models of scanpaths
+- [ ] Ethics approval and a pilot with 3–5 participants
+- [ ] Main study (24 or more participants, counterbalanced) with coded friction labels
+- [ ] Analysis with real vision-language models, including failure-case coding
+- [ ] Saliency model trained on UEyes and tested on unseen interfaces
+- [ ] Lab eye-tracker replication
 
 ## Author
 
@@ -303,10 +308,11 @@ Do not send screenshots containing personal or confidential data to externally h
 
 ## Citation
 
-If you use this software, please cite it using [CITATION.cff](CITATION.cff).
+If you use GazeGrounded UX in your research, please cite it using [CITATION.cff](CITATION.cff)
+(GitHub shows a "Cite this repository" button).
 
 ## Licence
 
-MIT for the code (see [LICENSE](LICENSE)). WebGazer.js (GPL-3.0-or-later) is loaded from a CDN
-by the study prototype and is not redistributed here. Third-party datasets and models keep
-their own licences.
+The code is released under the [MIT licence](LICENSE). The browser study loads WebGazer.js
+(GPL-3.0-or-later) from a CDN; it is not included in this repository. Third-party datasets and
+models keep their own licences.

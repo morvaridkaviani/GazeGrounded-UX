@@ -689,3 +689,22 @@ def stage_build_study(cfg):
     from gazegrounded.data.study_builder import build_study
 
     return build_study(cfg.root() / "study" / "webgazer")
+
+
+def stage_export_site(cfg):
+    """Export data and images for the static website in docs/.
+
+    The website contains trial-level gaze data. Exporting real participant data is refused
+    unless GAZEGROUNDED_ALLOW_REAL_EXPORT=1 is set, because publishing it must be covered by
+    the participants' consent.
+    """
+    import os
+
+    from gazegrounded.web_export import export_site
+
+    if not cfg.is_synthetic and os.environ.get("GAZEGROUNDED_ALLOW_REAL_EXPORT") != "1":
+        raise PermissionError(
+            "export-site would publish participant-level gaze data. Only do this if your "
+            "consent form allows it, then set GAZEGROUNDED_ALLOW_REAL_EXPORT=1."
+        )
+    return export_site(cfg)

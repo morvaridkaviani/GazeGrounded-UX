@@ -3,7 +3,7 @@ PY ?= python
 CONFIG ?= configs/synthetic.yaml
 CLI = $(PY) -m gazegrounded.cli --config $(CONFIG)
 
-.PHONY: install lint format test demo generate preprocess gaze vlm saliency nlp friction evaluate dashboard clean-demo
+.PHONY: install lint format test demo generate preprocess gaze vlm saliency nlp friction evaluate dashboard site serve-site clean-demo
 
 install:
 	$(PY) -m pip install -e ".[dev]"
@@ -49,6 +49,13 @@ demo:
 
 dashboard:
 	streamlit run dashboard/app.py
+
+# Static website (GitHub Pages) in docs/: refresh its data, then preview it locally.
+site:
+	$(CLI) export-site
+
+serve-site:
+	$(PY) -m http.server 8000 --directory docs
 
 clean-demo:
 	rm -rf data/synthetic/* data/interim/synthetic data/processed/synthetic assets/figures/synthetic

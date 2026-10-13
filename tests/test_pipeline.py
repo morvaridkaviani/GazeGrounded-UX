@@ -59,6 +59,7 @@ def test_cli_lists_every_documented_command():
         "train-friction",
         "evaluate",
         "build-study",
+        "export-site",
         "run-all",
     }
     assert expected == set(COMMANDS)
