@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GazeGrounded UX study</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- WebGazer.js 3.5.3 (GPL-3.0-or-later; loaded from the CDN, not redistributed). -->
+  <script src="https://cdn.jsdelivr.net/npm/webgazer@3.5.3/dist/webgazer.js"></script>
+</head>
+<body>
+  <main id="app">
+    <!-- 1. Consent -->
+    <section id="screen-consent" class="screen card">
+      <h1>Interface study</h1>
+      <p class="lead">Thank you for considering taking part. Please read this before you start.</p>
+      <ul class="info">
+        <li>The study takes about 15 minutes: a short calibration, then 9 short tasks on pictures of
+            websites.</li>
+        <li>Your <strong>webcam</strong> is used to <em>estimate</em> where you look on the screen.
+            Estimation runs only inside this browser tab.</li>
+        <li><strong>No video or images of you are recorded, stored or sent anywhere.</strong>
+            Only estimated screen coordinates, clicks, timings and your answers are kept.</li>
+        <li>Do not enter your name, e-mail or other personal details anywhere in the study.</li>
+        <li>You can stop at any time by closing this tab; nothing is saved until you choose to
+            download your data at the end.</li>
+      </ul>
+      <form id="consent-form">
+        <label><input type="checkbox" required> I have read the information above and the separate
+          consent form.</label>
+        <label><input type="checkbox" required> I am 18 years or older.</label>
+        <label><input type="checkbox" required> I agree that my webcam is used to estimate gaze
+          locally in this browser and that no video is saved.</label>
+        <label><input type="checkbox" required> I understand I can withdraw at any time without
+          giving a reason.</label>
+        <button type="submit" class="primary">I agree — continue</button>
+      </form>
+    </section>
+
+    <!-- 2. Participant code -->
+    <section id="screen-code" class="screen card hidden">
+      <h2>Participant code</h2>
+      <p>Enter the code you received from the researcher (e.g. <code>P07</code>).
+         Do <strong>not</strong> use your name or e-mail.</p>
+      <form id="code-form">
+        <input id="participant-code" type="text" required pattern="[A-Za-z0-9_\-]{2,12}"
+               autocomplete="off" placeholder="P07">
+        <p class="hint">2–12 letters, digits, - or _.</p>
+        <button type="submit" class="primary">Continue</button>
+      </form>
+    </section>
+
+    <!-- 3. Setup -->
+    <section id="screen-setup" class="screen card hidden">
+      <h2>Set-up</h2>
+      <ol class="info">
+        <li>Sit about an arm's length from the screen, face evenly lit, no strong light behind you.</li>
+        <li>Keep your head still-ish and avoid leaning during the study.</li>
+        <li>The study will switch to full screen. Please keep it in full screen.</li>
+      </ol>
+      <p id="setup-status" class="hint">Click start; your browser will ask for camera access.</p>
+      <button id="btn-start-webgazer" class="primary">Start camera &amp; calibration</button>
+    </section>
+
+    <!-- 4. Calibration / validation -->
+    <section id="screen-calibration" class="screen hidden">
+      <div id="calibration-instructions" class="banner">
+        Look at each dot and click it <strong>5 times</strong> while looking at it.
+      </div>
+      <div id="calibration-area"></div>
+    </section>
+
+    <section id="screen-validation-result" class="screen card hidden">
+      <h2>Calibration check</h2>
+      <p id="validation-text"></p>
+      <div class="row">
+        <button id="btn-recalibrate">Recalibrate</button>
+        <button id="btn-begin-tasks" class="primary">Begin tasks</button>
+      </div>
+    </section>
+
+    <!-- 5. Task instruction -->
+    <section id="screen-instruction" class="screen card hidden">
+      <p class="eyebrow" id="instruction-progress"></p>
+      <h2 id="instruction-task"></h2>
+      <p>Click on the place in the interface where you would do this. If you cannot find it,
+         use “I can't find it”.</p>
+      <button id="btn-show-stimulus" class="primary">Show the interface</button>
+    </section>
+
+    <!-- 6. Stimulus -->
+    <section id="screen-stimulus" class="screen hidden">
+      <img id="stimulus" alt="Interface for the current task" draggable="false">
+      <div id="stimulus-bar">
+        <span id="stimulus-task"></span>
+        <button id="btn-give-up">I can't find it</button>
+      </div>
+    </section>
+
+    <!-- 7. Post-task questions -->
+    <section id="screen-post" class="screen card hidden">
+      <h2>How easy or difficult was this task?</h2>
+      <div id="seq" class="seq" role="radiogroup" aria-label="Ease rating from 1 to 7"></div>
+      <div class="seq-labels"><span>Very difficult</span><span>Very easy</span></div>
+      <label for="feedback">What made this task easy or difficult? (optional)</label>
+      <textarea id="feedback" rows="3" maxlength="500"
+                placeholder="Please do not include personal information."></textarea>
+      <button id="btn-next" class="primary" disabled>Next</button>
+    </section>
+
+    <!-- 8. End / export -->
+    <section id="screen-end" class="screen card hidden">
+      <h2>Thank you!</h2>
+      <p>Your data is only in this browser tab. Download it and send it to the researcher using
+         the channel you agreed on. Then close this tab.</p>
+      <div id="quality-summary" class="hint"></div>
+      <div class="row">
+        <button id="btn-download-json" class="primary">Download data (JSON)</button>
+        <button id="btn-download-csv">Download gaze samples (CSV)</button>
+      </div>
+      <p class="hint">Changed your mind? Simply close the tab without downloading — nothing is kept.</p>
+    </section>
+  </main>
+  <script src="study.js"></script>
+</body>
+</html>

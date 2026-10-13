@@ -1,0 +1,1120 @@
+{
+  "format": "gazegrounded-study-tasks",
+  "study_version": "1.0",
+  "settings": {
+    "task_timeout_s": 90,
+    "max_calibration_attempts": 3,
+    "max_validation_error_px": 200,
+    "min_valid_sample_ratio": 0.6
+  },
+  "groups": {
+    "A": [
+      "bank_cards_clean",
+      "health_portal_friction",
+      "shop_checkout_clean",
+      "subscription_friction",
+      "travel_booking"
+    ],
+    "B": [
+      "bank_cards_friction",
+      "health_portal_clean",
+      "shop_checkout_friction",
+      "subscription_clean",
+      "travel_booking"
+    ]
+  },
+  "interfaces": [
+    {
+      "ui_id": "shop_checkout_clean",
+      "image": "stimuli/shop_checkout_clean.png",
+      "width": 1440,
+      "height": 900,
+      "domain": "e-commerce",
+      "condition": "clean",
+      "pair_id": "shop_checkout",
+      "aois": [
+        {
+          "aoi_id": "header",
+          "label": "ShopNow",
+          "x_min": 0.0,
+          "y_min": 0.0,
+          "x_max": 1.0,
+          "y_max": 0.075,
+          "semantic_role": "navigation",
+          "description": "Top navigation bar with the ShopNow logo"
+        },
+        {
+          "aoi_id": "progress",
+          "label": "Cart   >   Delivery   >   Payment   >   Review",
+          "x_min": 0.06,
+          "y_min": 0.1,
+          "x_max": 0.5,
+          "y_max": 0.135,
+          "semantic_role": "navigation",
+          "description": "Checkout progress steps"
+        },
+        {
+          "aoi_id": "title",
+          "label": "Checkout",
+          "x_min": 0.06,
+          "y_min": 0.145,
+          "x_max": 0.4,
+          "y_max": 0.2,
+          "semantic_role": "heading",
+          "description": "Page title"
+        },
+        {
+          "aoi_id": "address_card",
+          "label": "Delivery address",
+          "x_min": 0.06,
+          "y_min": 0.22,
+          "x_max": 0.6,
+          "y_max": 0.44,
+          "semantic_role": "region",
+          "description": "Card showing the current delivery address"
+        },
+        {
+          "aoi_id": "edit_address",
+          "label": "Edit address",
+          "x_min": 0.43,
+          "y_min": 0.355,
+          "x_max": 0.58,
+          "y_max": 0.41,
+          "semantic_role": "button",
+          "description": "Button to edit or change the delivery address"
+        },
+        {
+          "aoi_id": "delivery_options",
+          "label": "Delivery options",
+          "x_min": 0.06,
+          "y_min": 0.47,
+          "x_max": 0.6,
+          "y_max": 0.64,
+          "semantic_role": "region",
+          "description": "Choice between standard and express shipping speed"
+        },
+        {
+          "aoi_id": "payment",
+          "label": "Payment method",
+          "x_min": 0.06,
+          "y_min": 0.67,
+          "x_max": 0.6,
+          "y_max": 0.86,
+          "semantic_role": "region",
+          "description": "Selected payment card"
+        },
+        {
+          "aoi_id": "order_summary",
+          "label": "Order summary",
+          "x_min": 0.65,
+          "y_min": 0.22,
+          "x_max": 0.94,
+          "y_max": 0.64,
+          "semantic_role": "region",
+          "description": "Items, subtotal and total of the order"
+        },
+        {
+          "aoi_id": "discount_input",
+          "label": "Discount code",
+          "x_min": 0.67,
+          "y_min": 0.53,
+          "x_max": 0.83,
+          "y_max": 0.585,
+          "semantic_role": "input",
+          "description": "Text field to enter a discount or promo code"
+        },
+        {
+          "aoi_id": "discount_apply",
+          "label": "Apply",
+          "x_min": 0.84,
+          "y_min": 0.53,
+          "x_max": 0.92,
+          "y_max": 0.585,
+          "semantic_role": "button",
+          "description": "Button to apply the entered discount code"
+        },
+        {
+          "aoi_id": "place_order",
+          "label": "Place order  -  EUR 143.00",
+          "x_min": 0.65,
+          "y_min": 0.68,
+          "x_max": 0.94,
+          "y_max": 0.76,
+          "semantic_role": "button",
+          "description": "Primary button to pay for and place the order"
+        },
+        {
+          "aoi_id": "footer",
+          "label": "Help    Returns    Privacy    Terms",
+          "x_min": 0.25,
+          "y_min": 0.935,
+          "x_max": 0.75,
+          "y_max": 0.97,
+          "semantic_role": "navigation",
+          "description": "Footer links to help, returns and legal pages"
+        }
+      ]
+    },
+    {
+      "ui_id": "shop_checkout_friction",
+      "image": "stimuli/shop_checkout_friction.png",
+      "width": 1440,
+      "height": 900,
+      "domain": "e-commerce",
+      "condition": "friction",
+      "pair_id": "shop_checkout",
+      "aois": [
+        {
+          "aoi_id": "header",
+          "label": "ShopNow",
+          "x_min": 0.0,
+          "y_min": 0.0,
+          "x_max": 1.0,
+          "y_max": 0.075,
+          "semantic_role": "navigation",
+          "description": "Top navigation bar with the ShopNow logo"
+        },
+        {
+          "aoi_id": "progress",
+          "label": "Cart   >   Delivery   >   Payment   >   Review",
+          "x_min": 0.06,
+          "y_min": 0.1,
+          "x_max": 0.5,
+          "y_max": 0.135,
+          "semantic_role": "navigation",
+          "description": "Checkout progress steps"
+        },
+        {
+          "aoi_id": "title",
+          "label": "Checkout",
+          "x_min": 0.06,
+          "y_min": 0.145,
+          "x_max": 0.4,
+          "y_max": 0.2,
+          "semantic_role": "heading",
+          "description": "Page title"
+        },
+        {
+          "aoi_id": "promo_banner",
+          "label": "Members get FREE express delivery - join ShopNow+ today!",
+          "x_min": 0.06,
+          "y_min": 0.215,
+          "x_max": 0.94,
+          "y_max": 0.325,
+          "semantic_role": "banner",
+          "description": "Large promotional banner advertising a paid membership"
+        },
+        {
+          "aoi_id": "address_card",
+          "label": "Delivery",
+          "x_min": 0.06,
+          "y_min": 0.35,
+          "x_max": 0.6,
+          "y_max": 0.55,
+          "semantic_role": "region",
+          "description": "Card showing the current delivery address (read-only)"
+        },
+        {
+          "aoi_id": "delivery_options",
+          "label": "Delivery options",
+          "x_min": 0.06,
+          "y_min": 0.58,
+          "x_max": 0.6,
+          "y_max": 0.73,
+          "semantic_role": "region",
+          "description": "Choice between standard and express shipping speed"
+        },
+        {
+          "aoi_id": "payment",
+          "label": "Payment method",
+          "x_min": 0.06,
+          "y_min": 0.76,
+          "x_max": 0.6,
+          "y_max": 0.9,
+          "semantic_role": "region",
+          "description": "Selected payment card"
+        },
+        {
+          "aoi_id": "order_summary",
+          "label": "Order summary",
+          "x_min": 0.65,
+          "y_min": 0.35,
+          "x_max": 0.94,
+          "y_max": 0.73,
+          "semantic_role": "region",
+          "description": "Items, subtotal and total of the order"
+        },
+        {
+          "aoi_id": "discount_link",
+          "label": "Have a promo?",
+          "x_min": 0.67,
+          "y_min": 0.66,
+          "x_max": 0.77,
+          "y_max": 0.69,
+          "semantic_role": "link",
+          "description": "Small grey link that reveals the field for entering a discount or promo code"
+        },
+        {
+          "aoi_id": "place_order",
+          "label": "Place order  -  EUR 143.00",
+          "x_min": 0.65,
+          "y_min": 0.76,
+          "x_max": 0.94,
+          "y_max": 0.84,
+          "semantic_role": "button",
+          "description": "Primary button to pay for and place the order"
+        },
+        {
+          "aoi_id": "edit_address_link",
+          "label": "Shipping preferences",
+          "x_min": 0.06,
+          "y_min": 0.937,
+          "x_max": 0.19,
+          "y_max": 0.967,
+          "semantic_role": "link",
+          "description": "Footer link to shipping preferences, where the delivery address can be changed"
+        },
+        {
+          "aoi_id": "footer",
+          "label": "Help    Returns    Privacy    Terms",
+          "x_min": 0.3,
+          "y_min": 0.937,
+          "x_max": 0.75,
+          "y_max": 0.967,
+          "semantic_role": "navigation",
+          "description": "Footer links to help, returns and legal pages"
+        }
+      ]
+    },
+    {
+      "ui_id": "bank_cards_clean",
+      "image": "stimuli/bank_cards_clean.png",
+      "width": 1440,
+      "height": 900,
+      "domain": "banking",
+      "condition": "clean",
+      "pair_id": "bank_cards",
+      "aois": [
+        {
+          "aoi_id": "header",
+          "label": "NordBank",
+          "x_min": 0.0,
+          "y_min": 0.0,
+          "x_max": 1.0,
+          "y_max": 0.075,
+          "semantic_role": "navigation",
+          "description": "Top navigation bar with the NordBank logo"
+        },
+        {
+          "aoi_id": "sidebar_nav",
+          "label": "Overview",
+          "x_min": 0.02,
+          "y_min": 0.12,
+          "x_max": 0.15,
+          "y_max": 0.6,
+          "semantic_role": "navigation",
+          "description": "Sidebar navigation: overview, accounts, cards, payments, settings"
+        },
+        {
+          "aoi_id": "title",
+          "label": "Your cards",
+          "x_min": 0.21,
+          "y_min": 0.105,
+          "x_max": 0.5,
+          "y_max": 0.165,
+          "semantic_role": "heading",
+          "description": "Page title"
+        },
+        {
+          "aoi_id": "card_image",
+          "label": "NordBank  Debit   **** 4821",
+          "x_min": 0.21,
+          "y_min": 0.2,
+          "x_max": 0.47,
+          "y_max": 0.5,
+          "semantic_role": "image",
+          "description": "Picture of the debit card ending in 4821"
+        },
+        {
+          "aoi_id": "card_status",
+          "label": "Debit card **** 4821",
+          "x_min": 0.5,
+          "y_min": 0.2,
+          "x_max": 0.75,
+          "y_max": 0.29,
+          "semantic_role": "text",
+          "description": "Card number and current status"
+        },
+        {
+          "aoi_id": "freeze_card",
+          "label": "Freeze card",
+          "x_min": 0.5,
+          "y_min": 0.33,
+          "x_max": 0.66,
+          "y_max": 0.39,
+          "semantic_role": "button",
+          "description": "Button to temporarily freeze or block the card"
+        },
+        {
+          "aoi_id": "report_lost",
+          "label": "Report lost or stolen",
+          "x_min": 0.68,
+          "y_min": 0.33,
+          "x_max": 0.88,
+          "y_max": 0.39,
+          "semantic_role": "button",
+          "description": "Button to report the card as lost or stolen and order a replacement"
+        },
+        {
+          "aoi_id": "spending_limit",
+          "label": "Spending limit",
+          "x_min": 0.21,
+          "y_min": 0.55,
+          "x_max": 0.55,
+          "y_max": 0.74,
+          "semantic_role": "region",
+          "description": "Panel showing the card's monthly spending limit"
+        },
+        {
+          "aoi_id": "transactions",
+          "label": "Recent transactions",
+          "x_min": 0.58,
+          "y_min": 0.47,
+          "x_max": 0.94,
+          "y_max": 0.88,
+          "semantic_role": "region",
+          "description": "List of recent card transactions"
+        }
+      ]
+    },
+    {
+      "ui_id": "bank_cards_friction",
+      "image": "stimuli/bank_cards_friction.png",
+      "width": 1440,
+      "height": 900,
+      "domain": "banking",
+      "condition": "friction",
+      "pair_id": "bank_cards",
+      "aois": [
+        {
+          "aoi_id": "header",
+          "label": "NordBank",
+          "x_min": 0.0,
+          "y_min": 0.0,
+          "x_max": 1.0,
+          "y_max": 0.075,
+          "semantic_role": "navigation",
+          "description": "Top navigation bar with the NordBank logo"
+        },
+        {
+          "aoi_id": "sidebar_nav",
+          "label": "Overview",
+          "x_min": 0.02,
+          "y_min": 0.12,
+          "x_max": 0.15,
+          "y_max": 0.6,
+          "semantic_role": "navigation",
+          "description": "Sidebar navigation: overview, accounts, cards, payments, settings"
+        },
+        {
+          "aoi_id": "title",
+          "label": "Your cards",
+          "x_min": 0.21,
+          "y_min": 0.105,
+          "x_max": 0.5,
+          "y_max": 0.165,
+          "semantic_role": "heading",
+          "description": "Page title"
+        },
+        {
+          "aoi_id": "card_image",
+          "label": "NordBank  Debit   **** 4821",
+          "x_min": 0.21,
+          "y_min": 0.2,
+          "x_max": 0.47,
+          "y_max": 0.5,
+          "semantic_role": "image",
+          "description": "Picture of the debit card ending in 4821"
+        },
+        {
+          "aoi_id": "card_status",
+          "label": "Debit card **** 4821",
+          "x_min": 0.5,
+          "y_min": 0.2,
+          "x_max": 0.75,
+          "y_max": 0.29,
+          "semantic_role": "text",
+          "description": "Card number and current status"
+        },
+        {
+          "aoi_id": "icon_freeze",
+          "label": "",
+          "x_min": 0.5,
+          "y_min": 0.325,
+          "x_max": 0.54,
+          "y_max": 0.39,
+          "semantic_role": "button",
+          "description": "Icon-only button with a padlock symbol that freezes or blocks the card (no text label)"
+        },
+        {
+          "aoi_id": "icon_pin",
+          "label": "",
+          "x_min": 0.555,
+          "y_min": 0.325,
+          "x_max": 0.595,
+          "y_max": 0.39,
+          "semantic_role": "button",
+          "description": "Icon-only button that shows the card PIN"
+        },
+        {
+          "aoi_id": "icon_more",
+          "label": "",
+          "x_min": 0.61,
+          "y_min": 0.325,
+          "x_max": 0.65,
+          "y_max": 0.39,
+          "semantic_role": "button",
+          "description": "Icon-only overflow menu with more card options"
+        },
+        {
+          "aoi_id": "upsell",
+          "label": "Upgrade to Platinum",
+          "x_min": 0.21,
+          "y_min": 0.54,
+          "x_max": 0.55,
+          "y_max": 0.7,
+          "semantic_role": "banner",
+          "description": "Large advertisement for a premium card upgrade"
+        },
+        {
+          "aoi_id": "card_conditions",
+          "label": "Card type: Debit Mastercard. Issued 03/2024, valid until 03/",
+          "x_min": 0.58,
+          "y_min": 0.44,
+          "x_max": 0.97,
+          "y_max": 0.7,
+          "semantic_role": "text",
+          "description": "Dense block of card terms and details, including the monthly spending limit"
+        },
+        {
+          "aoi_id": "transactions",
+          "label": "Recent transactions",
+          "x_min": 0.21,
+          "y_min": 0.73,
+          "x_max": 0.94,
+          "y_max": 0.95,
+          "semantic_role": "region",
+          "description": "List of recent card transactions"
+        }
+      ]
+    },
+    {
+      "ui_id": "travel_booking",
+      "image": "stimuli/travel_booking.png",
+      "width": 1440,
+      "height": 900,
+      "domain": "travel",
+      "condition": "single",
+      "pair_id": null,
+      "aois": [
+        {
+          "aoi_id": "header",
+          "label": "SkyWays",
+          "x_min": 0.0,
+          "y_min": 0.0,
+          "x_max": 1.0,
+          "y_max": 0.075,
+          "semantic_role": "navigation",
+          "description": "Top navigation bar with the SkyWays logo"
+        },
+        {
+          "aoi_id": "title",
+          "label": "Booking ABC123  -  Vienna to Lisbon",
+          "x_min": 0.06,
+          "y_min": 0.105,
+          "x_max": 0.62,
+          "y_max": 0.165,
+          "semantic_role": "heading",
+          "description": "Booking reference and route"
+        },
+        {
+          "aoi_id": "flight_details",
+          "label": "Outbound flight",
+          "x_min": 0.06,
+          "y_min": 0.2,
+          "x_max": 0.62,
+          "y_max": 0.45,
+          "semantic_role": "region",
+          "description": "Flight date, times, airports and passenger count"
+        },
+        {
+          "aoi_id": "manage_booking",
+          "label": "Manage booking  v",
+          "x_min": 0.66,
+          "y_min": 0.2,
+          "x_max": 0.86,
+          "y_max": 0.26,
+          "semantic_role": "button",
+          "description": "Dropdown menu with options to change the date, change seats or cancel the booking"
+        },
+        {
+          "aoi_id": "check_in",
+          "label": "Check in online",
+          "x_min": 0.66,
+          "y_min": 0.29,
+          "x_max": 0.94,
+          "y_max": 0.37,
+          "semantic_role": "button",
+          "description": "Primary button to start online check-in"
+        },
+        {
+          "aoi_id": "extras",
+          "label": "Add extras",
+          "x_min": 0.66,
+          "y_min": 0.41,
+          "x_max": 0.94,
+          "y_max": 0.62,
+          "semantic_role": "region",
+          "description": "Offers to add seats, meals and insurance"
+        },
+        {
+          "aoi_id": "passengers",
+          "label": "Passengers",
+          "x_min": 0.06,
+          "y_min": 0.48,
+          "x_max": 0.62,
+          "y_max": 0.62,
+          "semantic_role": "region",
+          "description": "Passenger names on the booking"
+        },
+        {
+          "aoi_id": "fare_conditions",
+          "label": "Fare: Economy Light. Changes permitted for a fee of EUR 70 p",
+          "x_min": 0.06,
+          "y_min": 0.66,
+          "x_max": 0.62,
+          "y_max": 0.8,
+          "semantic_role": "text",
+          "description": "Small-print fare conditions including change fees and the checked baggage allowance"
+        },
+        {
+          "aoi_id": "footer",
+          "label": "Help    Contact    Privacy    Terms",
+          "x_min": 0.25,
+          "y_min": 0.935,
+          "x_max": 0.75,
+          "y_max": 0.97,
+          "semantic_role": "navigation",
+          "description": "Footer links to help, returns and legal pages"
+        }
+      ]
+    },
+    {
+      "ui_id": "health_portal_clean",
+      "image": "stimuli/health_portal_clean.png",
+      "width": 1440,
+      "height": 900,
+      "domain": "healthcare",
+      "condition": "clean",
+      "pair_id": "health_portal",
+      "aois": [
+        {
+          "aoi_id": "header",
+          "label": "CareLink",
+          "x_min": 0.0,
+          "y_min": 0.0,
+          "x_max": 1.0,
+          "y_max": 0.075,
+          "semantic_role": "navigation",
+          "description": "Top navigation bar with the CareLink logo"
+        },
+        {
+          "aoi_id": "title",
+          "label": "Good morning, Alex",
+          "x_min": 0.06,
+          "y_min": 0.105,
+          "x_max": 0.5,
+          "y_max": 0.165,
+          "semantic_role": "heading",
+          "description": "Greeting"
+        },
+        {
+          "aoi_id": "next_appointment",
+          "label": "Your next appointment",
+          "x_min": 0.06,
+          "y_min": 0.2,
+          "x_max": 0.55,
+          "y_max": 0.42,
+          "semantic_role": "region",
+          "description": "Upcoming appointment with date, time and doctor"
+        },
+        {
+          "aoi_id": "reschedule",
+          "label": "Reschedule",
+          "x_min": 0.06,
+          "y_min": 0.45,
+          "x_max": 0.2,
+          "y_max": 0.51,
+          "semantic_role": "button",
+          "description": "Button to move the appointment to another time"
+        },
+        {
+          "aoi_id": "results",
+          "label": "Test results",
+          "x_min": 0.6,
+          "y_min": 0.2,
+          "x_max": 0.94,
+          "y_max": 0.42,
+          "semantic_role": "region",
+          "description": "Latest lab test results"
+        },
+        {
+          "aoi_id": "save_contact",
+          "label": "Save emergency contact",
+          "x_min": 0.6,
+          "y_min": 0.55,
+          "x_max": 0.85,
+          "y_max": 0.61,
+          "semantic_role": "button",
+          "description": "Button that saves the emergency contact details"
+        },
+        {
+          "aoi_id": "save_confirmation",
+          "label": "Saved. Your emergency contact was updated.",
+          "x_min": 0.6,
+          "y_min": 0.63,
+          "x_max": 0.94,
+          "y_max": 0.67,
+          "semantic_role": "text",
+          "description": "Confirmation message that the contact was saved"
+        },
+        {
+          "aoi_id": "footer",
+          "label": "Help    Accessibility    Privacy",
+          "x_min": 0.25,
+          "y_min": 0.935,
+          "x_max": 0.75,
+          "y_max": 0.97,
+          "semantic_role": "navigation",
+          "description": "Footer links to help, returns and legal pages"
+        }
+      ]
+    },
+    {
+      "ui_id": "health_portal_friction",
+      "image": "stimuli/health_portal_friction.png",
+      "width": 1440,
+      "height": 900,
+      "domain": "healthcare",
+      "condition": "friction",
+      "pair_id": "health_portal",
+      "aois": [
+        {
+          "aoi_id": "header",
+          "label": "CareLink",
+          "x_min": 0.0,
+          "y_min": 0.0,
+          "x_max": 1.0,
+          "y_max": 0.075,
+          "semantic_role": "navigation",
+          "description": "Top navigation bar with the CareLink logo"
+        },
+        {
+          "aoi_id": "title",
+          "label": "Good morning, Alex",
+          "x_min": 0.06,
+          "y_min": 0.105,
+          "x_max": 0.5,
+          "y_max": 0.165,
+          "semantic_role": "heading",
+          "description": "Greeting"
+        },
+        {
+          "aoi_id": "news",
+          "label": "Flu season: book your vaccination now",
+          "x_min": 0.06,
+          "y_min": 0.2,
+          "x_max": 0.94,
+          "y_max": 0.3,
+          "semantic_role": "banner",
+          "description": "Large health campaign banner"
+        },
+        {
+          "aoi_id": "activity",
+          "label": "Activity",
+          "x_min": 0.06,
+          "y_min": 0.34,
+          "x_max": 0.55,
+          "y_max": 0.6,
+          "semantic_role": "text",
+          "description": "Chronological activity feed that also contains the next appointment"
+        },
+        {
+          "aoi_id": "results",
+          "label": "Test results",
+          "x_min": 0.6,
+          "y_min": 0.34,
+          "x_max": 0.94,
+          "y_max": 0.55,
+          "semantic_role": "region",
+          "description": "Latest lab test results"
+        },
+        {
+          "aoi_id": "save_contact",
+          "label": "Save emergency contact",
+          "x_min": 0.6,
+          "y_min": 0.6,
+          "x_max": 0.85,
+          "y_max": 0.66,
+          "semantic_role": "button",
+          "description": "Button that saves the emergency contact details"
+        },
+        {
+          "aoi_id": "save_confirmation",
+          "label": "changes stored",
+          "x_min": 0.06,
+          "y_min": 0.88,
+          "x_max": 0.2,
+          "y_max": 0.91,
+          "semantic_role": "text",
+          "description": "Faint status text that the contact was saved"
+        },
+        {
+          "aoi_id": "footer",
+          "label": "Help    Accessibility    Privacy",
+          "x_min": 0.25,
+          "y_min": 0.935,
+          "x_max": 0.75,
+          "y_max": 0.97,
+          "semantic_role": "navigation",
+          "description": "Footer links to help, returns and legal pages"
+        }
+      ]
+    },
+    {
+      "ui_id": "subscription_clean",
+      "image": "stimuli/subscription_clean.png",
+      "width": 1440,
+      "height": 900,
+      "domain": "subscription",
+      "condition": "clean",
+      "pair_id": "subscription",
+      "aois": [
+        {
+          "aoi_id": "header",
+          "label": "StreamBox",
+          "x_min": 0.0,
+          "y_min": 0.0,
+          "x_max": 1.0,
+          "y_max": 0.075,
+          "semantic_role": "navigation",
+          "description": "Top navigation bar with the StreamBox logo"
+        },
+        {
+          "aoi_id": "title",
+          "label": "Your plan",
+          "x_min": 0.06,
+          "y_min": 0.105,
+          "x_max": 0.5,
+          "y_max": 0.165,
+          "semantic_role": "heading",
+          "description": "Page title"
+        },
+        {
+          "aoi_id": "plan_card",
+          "label": "Premium  -  EUR 17.99 / month",
+          "x_min": 0.06,
+          "y_min": 0.2,
+          "x_max": 0.6,
+          "y_max": 0.42,
+          "semantic_role": "region",
+          "description": "Current subscription plan and price"
+        },
+        {
+          "aoi_id": "change_plan",
+          "label": "Change plan",
+          "x_min": 0.08,
+          "y_min": 0.33,
+          "x_max": 0.22,
+          "y_max": 0.39,
+          "semantic_role": "button",
+          "description": "Button to switch to a different subscription plan"
+        },
+        {
+          "aoi_id": "cancel_plan",
+          "label": "Cancel subscription",
+          "x_min": 0.24,
+          "y_min": 0.33,
+          "x_max": 0.42,
+          "y_max": 0.39,
+          "semantic_role": "button",
+          "description": "Button to cancel the subscription"
+        },
+        {
+          "aoi_id": "billing",
+          "label": "Billing",
+          "x_min": 0.06,
+          "y_min": 0.46,
+          "x_max": 0.6,
+          "y_max": 0.64,
+          "semantic_role": "region",
+          "description": "Next payment date and payment method"
+        },
+        {
+          "aoi_id": "footer",
+          "label": "Help    Privacy    Terms",
+          "x_min": 0.25,
+          "y_min": 0.935,
+          "x_max": 0.75,
+          "y_max": 0.97,
+          "semantic_role": "navigation",
+          "description": "Footer links to help, returns and legal pages"
+        }
+      ]
+    },
+    {
+      "ui_id": "subscription_friction",
+      "image": "stimuli/subscription_friction.png",
+      "width": 1440,
+      "height": 900,
+      "domain": "subscription",
+      "condition": "friction",
+      "pair_id": "subscription",
+      "aois": [
+        {
+          "aoi_id": "header",
+          "label": "StreamBox",
+          "x_min": 0.0,
+          "y_min": 0.0,
+          "x_max": 1.0,
+          "y_max": 0.075,
+          "semantic_role": "navigation",
+          "description": "Top navigation bar with the StreamBox logo"
+        },
+        {
+          "aoi_id": "title",
+          "label": "Your plan",
+          "x_min": 0.06,
+          "y_min": 0.105,
+          "x_max": 0.5,
+          "y_max": 0.165,
+          "semantic_role": "heading",
+          "description": "Page title"
+        },
+        {
+          "aoi_id": "plan_card",
+          "label": "Premium  -  EUR 17.99 / month",
+          "x_min": 0.06,
+          "y_min": 0.2,
+          "x_max": 0.6,
+          "y_max": 0.42,
+          "semantic_role": "region",
+          "description": "Current subscription plan and price"
+        },
+        {
+          "aoi_id": "upgrade",
+          "label": "Upgrade to Ultra 4K",
+          "x_min": 0.08,
+          "y_min": 0.33,
+          "x_max": 0.28,
+          "y_max": 0.39,
+          "semantic_role": "button",
+          "description": "Button to upgrade to a more expensive plan"
+        },
+        {
+          "aoi_id": "account_links",
+          "label": "Manage profiles",
+          "x_min": 0.66,
+          "y_min": 0.2,
+          "x_max": 0.9,
+          "y_max": 0.42,
+          "semantic_role": "navigation",
+          "description": "List of similar 'Manage ...' links; 'Manage membership' leads to cancellation"
+        },
+        {
+          "aoi_id": "billing",
+          "label": "Billing",
+          "x_min": 0.06,
+          "y_min": 0.46,
+          "x_max": 0.6,
+          "y_max": 0.64,
+          "semantic_role": "region",
+          "description": "Next payment date and payment method"
+        },
+        {
+          "aoi_id": "footer",
+          "label": "Help    Privacy    Terms",
+          "x_min": 0.25,
+          "y_min": 0.935,
+          "x_max": 0.75,
+          "y_max": 0.97,
+          "semantic_role": "navigation",
+          "description": "Footer links to help, returns and legal pages"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "shop_checkout_clean__change_address",
+      "ui_id": "shop_checkout_clean",
+      "task_key": "change_address",
+      "description": "Change the delivery address for this order.",
+      "target_aoi_ids": [
+        "edit_address"
+      ],
+      "designed_friction_type": "no_friction"
+    },
+    {
+      "task_id": "shop_checkout_clean__apply_discount",
+      "ui_id": "shop_checkout_clean",
+      "task_key": "apply_discount",
+      "description": "Apply the discount code SAVE10 to your order.",
+      "target_aoi_ids": [
+        "discount_input",
+        "discount_apply"
+      ],
+      "designed_friction_type": "no_friction"
+    },
+    {
+      "task_id": "shop_checkout_friction__change_address",
+      "ui_id": "shop_checkout_friction",
+      "task_key": "change_address",
+      "description": "Change the delivery address for this order.",
+      "target_aoi_ids": [
+        "edit_address_link"
+      ],
+      "designed_friction_type": "findability"
+    },
+    {
+      "task_id": "shop_checkout_friction__apply_discount",
+      "ui_id": "shop_checkout_friction",
+      "task_key": "apply_discount",
+      "description": "Apply the discount code SAVE10 to your order.",
+      "target_aoi_ids": [
+        "discount_link"
+      ],
+      "designed_friction_type": "ambiguous_wording"
+    },
+    {
+      "task_id": "bank_cards_clean__freeze_card",
+      "ui_id": "bank_cards_clean",
+      "task_key": "freeze_card",
+      "description": "You have lost your debit card. Freeze it.",
+      "target_aoi_ids": [
+        "freeze_card"
+      ],
+      "designed_friction_type": "no_friction"
+    },
+    {
+      "task_id": "bank_cards_clean__find_limit",
+      "ui_id": "bank_cards_clean",
+      "task_key": "find_limit",
+      "description": "Find the card's monthly spending limit.",
+      "target_aoi_ids": [
+        "spending_limit"
+      ],
+      "designed_friction_type": "no_friction"
+    },
+    {
+      "task_id": "bank_cards_friction__freeze_card",
+      "ui_id": "bank_cards_friction",
+      "task_key": "freeze_card",
+      "description": "You have lost your debit card. Freeze it.",
+      "target_aoi_ids": [
+        "icon_freeze"
+      ],
+      "designed_friction_type": "ambiguous_wording"
+    },
+    {
+      "task_id": "bank_cards_friction__find_limit",
+      "ui_id": "bank_cards_friction",
+      "task_key": "find_limit",
+      "description": "Find the card's monthly spending limit.",
+      "target_aoi_ids": [
+        "card_conditions"
+      ],
+      "designed_friction_type": "information_overload"
+    },
+    {
+      "task_id": "travel_booking__change_date",
+      "ui_id": "travel_booking",
+      "task_key": "change_date",
+      "description": "Change the date of your flight.",
+      "target_aoi_ids": [
+        "manage_booking"
+      ],
+      "designed_friction_type": "navigation"
+    },
+    {
+      "task_id": "travel_booking__find_baggage",
+      "ui_id": "travel_booking",
+      "task_key": "find_baggage",
+      "description": "Find out how much checked baggage is included.",
+      "target_aoi_ids": [
+        "fare_conditions"
+      ],
+      "designed_friction_type": "visual_hierarchy"
+    },
+    {
+      "task_id": "health_portal_clean__find_appointment",
+      "ui_id": "health_portal_clean",
+      "task_key": "find_appointment",
+      "description": "Find the time of your next appointment.",
+      "target_aoi_ids": [
+        "next_appointment"
+      ],
+      "designed_friction_type": "no_friction"
+    },
+    {
+      "task_id": "health_portal_clean__confirm_saved",
+      "ui_id": "health_portal_clean",
+      "task_key": "confirm_saved",
+      "description": "Check whether your emergency contact was saved.",
+      "target_aoi_ids": [
+        "save_confirmation"
+      ],
+      "designed_friction_type": "no_friction"
+    },
+    {
+      "task_id": "health_portal_friction__find_appointment",
+      "ui_id": "health_portal_friction",
+      "task_key": "find_appointment",
+      "description": "Find the time of your next appointment.",
+      "target_aoi_ids": [
+        "activity"
+      ],
+      "designed_friction_type": "information_overload"
+    },
+    {
+      "task_id": "health_portal_friction__confirm_saved",
+      "ui_id": "health_portal_friction",
+      "task_key": "confirm_saved",
+      "description": "Check whether your emergency contact was saved.",
+      "target_aoi_ids": [
+        "save_confirmation"
+      ],
+      "designed_friction_type": "feedback_uncertainty"
+    },
+    {
+      "task_id": "subscription_clean__cancel_plan",
+      "ui_id": "subscription_clean",
+      "task_key": "cancel_plan",
+      "description": "Cancel your subscription.",
+      "target_aoi_ids": [
+        "cancel_plan"
+      ],
+      "designed_friction_type": "no_friction"
+    },
+    {
+      "task_id": "subscription_friction__cancel_plan",
+      "ui_id": "subscription_friction",
+      "task_key": "cancel_plan",
+      "description": "Cancel your subscription.",
+      "target_aoi_ids": [
+        "account_links"
+      ],
+      "designed_friction_type": "navigation"
+    }
+  ]
+}
