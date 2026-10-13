@@ -1,0 +1,15 @@
+%% GazeGrounded UX architecture (Mermaid). Rendered in README.md.
+flowchart TB
+    S[UI screenshot] --> V["Vision-language model<br/>task-conditioned grounding"]
+    T[Task description] --> V
+    V --> M[VLM Task-Relevance Map]
+    G[Gaze samples] --> F["I-DT fixations · AOIs<br/>TTFF · revisits · scanpaths · heatmaps"]
+    M --> A["Human vs VLM alignment<br/>similarity · divergence"]
+    F --> A
+    S --> D["Deep saliency model<br/>(task-agnostic baseline)"]
+    I[Interaction log] --> X[Multimodal feature table]
+    U[Written feedback] --> N["NLP: TF-IDF + logistic regression"]
+    A --> X
+    F --> X
+    N --> X
+    X --> R["Friction model<br/>low · medium · high + explanation"]

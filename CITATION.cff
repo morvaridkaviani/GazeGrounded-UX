@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "GazeGrounded UX: task-aware multimodal detection of UX friction"
+abstract: >-
+  Research software that compares human gaze with task-conditioned vision-language model
+  relevance on user interfaces, and combines gaze, interaction, visual and textual signals
+  to study and predict UX friction.
+type: software
+version: 0.1.0
+date-released: 2026-10-13
+license: MIT
+authors:
+  - family-names: "Kaviani"
+    given-names: "Morvarid"
+    website: "https://www.morvaridkaviani.com"
+url: "https://www.morvaridkaviani.com"
+keywords:
+  - human-computer interaction
+  - eye tracking
+  - vision-language models
+  - saliency
+  - user experience
+  - multimodal machine learning
